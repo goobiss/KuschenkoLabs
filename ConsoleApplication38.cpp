@@ -1,80 +1,48 @@
 ﻿#include <iostream>
+#include <cmath>
 
-class Chair
-{
+using namespace std;
+
+class Hexagon {
 private:
-
-    double lenght;
-    double width;
-
+	float SideA;
 public:
 
-    Chair() = default;
-    Chair(double _lenght, double _width) : lenght(_lenght), width(_width) {};
+	Hexagon() {
+		this->SideA = 0;
+	}
 
-    void print_sqrt()
-    {
-        std::cout << (lenght * width) * 4. + width * width << '\n';
-    }
+	Hexagon(float SideA) {
+		this->SideA = SideA;
+	}
 
-    void SetLenght(const double _lenght)
-    {
-        lenght = _lenght;
-    }
+	void setSideA(float SideA) {
+		this->SideA = SideA;
+	}
 
-    void SetWidth(const double _width)
-    {
-        width = _width;
-    }
+	float getSideA() {
+		return this->SideA;
+	}
 
-    double GetLenght()
-    {
-        return this->lenght;
-    }
-
-    double GetWidth()
-    {
-        return this->width;
-    }
-
-    friend Chair frd(Chair b, Chair a);
-
+	float getArea() {
+		return ((3*sqrt(3))/2) * pow(this->SideA, 2);
+	}
+	Hexagon operator +(Hexagon& obj) {
+		Hexagon a(sqrt((this->getArea() + obj.getArea()) / ((3 * sqrt(3)) / 2)));
+		return a;
+	}
+	friend ostream& operator << (ostream& t, Hexagon& obj);
 };
 
-Chair frd(Chair b, Chair a)
-{
-    return Chair(a.width + b.width, a.lenght + b.lenght);
+ostream& operator << (ostream& t, Hexagon& obj) {
+	t << "SideA= " << obj.getSideA() << " | HexagonArea= " << obj.getArea();
+	return t;
 }
 
-std::istream& operator >> (std::istream& ist, Chair& ch)
-{
-    double _lenght;
-    double _width;
-    std::cout << " Input lenght(Dovzhina) = ";
-    ist >> _lenght;
-    std::cout << " Input width(Shirina)  = ";
-    ist >> _width;
+int main() {
+	Hexagon a(5.0), b(2.5);
+	Hexagon c = a + b;
 
-    ch.SetLenght(_lenght);
-    ch.SetWidth(_width);
-
-    return ist;
-}
-
-int main()
-{
-    Chair chair_one = { 5.5, 4.4 };
-    std::cout << "Chair1 = ";
-    chair_one.print_sqrt();
-
-    Chair chair_two;
-    std::cin >> chair_two;
-    std::cout << "Chair2 = ";
-    chair_two.print_sqrt();
-
-    Chair chair_three=frd(chair_one, chair_two);
-    std::cout << "Chair3 = ";
-    chair_three.print_sqrt();
-
-    system("pause");
+	cout << "a = " << a << endl << "b = " << b << endl;
+	cout << "c = a + b = " << c << endl;
 }
