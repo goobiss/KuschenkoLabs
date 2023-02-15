@@ -1,48 +1,80 @@
 ﻿#include <iostream>
-#include <cmath>
 
-using namespace std;
-
-class Hexagon {
+class Chair
+{
 private:
-	float SideA;
+
+    double lenght;
+    double width;
+
 public:
 
-	Hexagon() {
-		this->SideA = 0;
-	}
+    Chair() = default;
+    Chair(double _lenght, double _width) : lenght(_lenght), width(_width) {};
 
-	Hexagon(float SideA) {
-		this->SideA = SideA;
-	}
+    void print_sqrt()
+    {
+        std::cout << (lenght * width) * 4. + width * width << '\n';
+    }
 
-	void setSideA(float SideA) {
-		this->SideA = SideA;
-	}
+    void SetLenght(const double _lenght)
+    {
+        lenght = _lenght;
+    }
 
-	float getSideA() {
-		return this->SideA;
-	}
+    void SetWidth(const double _width)
+    {
+        width = _width;
+    }
 
-	float getArea() {
-		return ((3*sqrt(3))/2) * pow(this->SideA, 2);
-	}
-	Hexagon operator +(Hexagon& obj) {
-		Hexagon a(sqrt((this->getArea() + obj.getArea()) / ((3 * sqrt(3)) / 2)));
-		return a;
-	}
-	friend ostream& operator << (ostream& t, Hexagon& obj);
+    double GetLenght()
+    {
+        return this->lenght;
+    }
+
+    double GetWidth()
+    {
+        return this->width;
+    }
+
+    friend Chair frd(Chair b, Chair a);
+
 };
 
-ostream& operator << (ostream& t, Hexagon& obj) {
-	t << "SideA= " << obj.getSideA() << " | HexagonArea= " << obj.getArea();
-	return t;
+Chair frd(Chair b, Chair a)
+{
+    return Chair(a.width + b.width, a.lenght + b.lenght);
 }
 
-int main() {
-	Hexagon a(5.0), b(2.5);
-	Hexagon c = a + b;
+std::istream& operator >> (std::istream& ist, Chair& ch)
+{
+    double _lenght;
+    double _width;
+    std::cout << " Input lenght(Dovzhina) = ";
+    ist >> _lenght;
+    std::cout << " Input width(Shirina)  = ";
+    ist >> _width;
 
-	cout << "a = " << a << endl << "b = " << b << endl;
-	cout << "c = a + b = " << c << endl;
+    ch.SetLenght(_lenght);
+    ch.SetWidth(_width);
+
+    return ist;
+}
+
+int main()
+{
+    Chair chair_one = { 5.5, 4.4 };
+    std::cout << "Chair1 = ";
+    chair_one.print_sqrt();
+
+    Chair chair_two;
+    std::cin >> chair_two;
+    std::cout << "Chair2 = ";
+    chair_two.print_sqrt();
+
+    Chair chair_three=frd(chair_one, chair_two);
+    std::cout << "Chair3 = ";
+    chair_three.print_sqrt();
+
+    system("pause");
 }
